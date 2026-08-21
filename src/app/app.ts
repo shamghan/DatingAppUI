@@ -5,6 +5,7 @@ import { lastValueFrom } from 'rxjs';
 import { Nav } from '../layout/nav/nav';
 import { AccountService } from '../core/services/account-service';
 import { Home } from "../features/home/home";
+import { User } from '../type/user';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import { Home } from "../features/home/home";
 })
 export class App implements OnInit{
   private accountService=inject(AccountService);
-  protected members=signal<any>([]);
+  protected members=signal<User[]>([]);
   private http = inject(HttpClient);
   protected readonly title = signal('dating app');
 
@@ -35,7 +36,7 @@ setCurrentUser()
 
 async getMembers(){
   try {
-     return lastValueFrom(this.http.get('http://localhost:5186/api/members'));
+     return lastValueFrom(this.http.get<User[]>('http://localhost:5186/api/members'));
     
   } catch (error) {
     console.error(error);
