@@ -7,16 +7,11 @@
                 required>
             <input type="password" class="input w-full" name="password" [(ngModel)]="creds.password"
                 placeholder="Password" required>
-            <select class="select w-full">
-                <option disabled selected>pick a member</option>
-                @for(member of membersFromHome(); track $index){
-                    <option value="{{member.id}}">{{ member.displayName }}</option>
-                }
-            </select>
+           
 
             <div class="flex item-center justify-end gap-3">
                 <button class="btn"  (click)="cancel()" type="button">Cancel</button>
-                <button class="btn btn-primary">Submit</button>
+                <button class="btn btn-primary"  type="submit">Submit</button>
             </div>
         </form>
     </div>

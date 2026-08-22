@@ -9,8 +9,6 @@ import { User } from '../../type/user';
   styleUrl: './home.css',
 })
 export class Home {
-
-  @Input({required: true}) membersFromApp: User[]=[];
   protected registerMode=signal(false);
 
   showRegisterMode(value:boolean){
