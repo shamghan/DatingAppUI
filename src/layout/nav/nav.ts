@@ -17,9 +17,9 @@ export class Nav {
     private toast = inject(ToastService)
     login() {
       this.accountService.login(this.creds).subscribe({
-        next: result => {
+        next: () => {
           this.router.navigateByUrl('/members');
-          console.log(result);
+         
           this.toast.success('Logged in successfull');
           this.creds = {email:'', password:''};
         },
