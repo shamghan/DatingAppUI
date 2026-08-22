@@ -13,8 +13,8 @@ export class Home {
   @Input({required: true}) membersFromApp: User[]=[];
   protected registerMode=signal(false);
 
-  showRegisterMode(){
-    this.registerMode.set(true);
+  showRegisterMode(value:boolean){
+    this.registerMode.set(value);
   }
 
 }
