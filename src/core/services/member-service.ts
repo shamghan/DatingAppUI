@@ -13,18 +13,20 @@ export class MemberService {
   private baseUrl= environment.apiUrl;
   getMembers()
   {
-    return this.httpClient.get<Member[]>(this.baseUrl+'members', this.getHttpOption());
+    //return this.httpClient.get<Member[]>(this.baseUrl+'members', this.getHttpOption());
+    return this.httpClient.get<Member[]>(this.baseUrl+'members');
   }
   getMember(id:string){
 
-    return this.httpClient.get<Member>(this.baseUrl+'member/id',this.getHttpOption());
+    //return this.httpClient.get<Member>(this.baseUrl+'member/id',this.getHttpOption());
+    return this.httpClient.get<Member>(this.baseUrl+'member/id');
   }
-  private getHttpOption(){
-    return {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer '+this.accountService.currentUser()?.token
-      })
-    }
+  // private getHttpOption(){
+  //   return {
+  //     headers: new HttpHeaders({
+  //       Authorization: 'Bearer '+this.accountService.currentUser()?.token
+  //     })
+  //   }
 
-  }
+  // }
 }
