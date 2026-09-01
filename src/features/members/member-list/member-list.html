@@ -1,4 +1,4 @@
-<div class ="grid grid-cols-5 gap-6">
+<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;">
     @for(member of members$ | async; track member.id)
     {
         <app-member-card [member]="member"/>
