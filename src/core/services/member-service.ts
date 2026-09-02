@@ -19,7 +19,7 @@ export class MemberService {
   getMember(id:string){
 
     //return this.httpClient.get<Member>(this.baseUrl+'member/id',this.getHttpOption());
-    return this.httpClient.get<Member>(this.baseUrl+'member/id');
+    return this.httpClient.get<Member>(this.baseUrl+'members/'+id);
   }
   // private getHttpOption(){
   //   return {
