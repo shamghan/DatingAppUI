@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { Member } from '../../type/member';
+import { Member, Photo } from '../../type/member';
 import { AccountService } from './account-service';
 
 @Injectable({
@@ -20,6 +20,10 @@ export class MemberService {
 
     //return this.httpClient.get<Member>(this.baseUrl+'member/id',this.getHttpOption());
     return this.httpClient.get<Member>(this.baseUrl+'members/'+id);
+  }
+  getMemberPhotos(id:string)
+  {
+    return this.httpClient.get<Photo[]>(this.baseUrl+'members/'+id+'/photos');
   }
   // private getHttpOption(){
   //   return {
