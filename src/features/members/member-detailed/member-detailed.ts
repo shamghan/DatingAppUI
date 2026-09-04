@@ -4,16 +4,17 @@ import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, Ro
 import { AsyncPipe } from '@angular/common';
 import { EMPTY, filter, Observable } from 'rxjs';
 import { Member } from '../../../type/member';
+import { AgePipe } from '../../../core/pipes/age-pipe';
 
 @Component({
   selector: 'app-member-detailed',
-  imports: [AsyncPipe, RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [AsyncPipe, RouterLink, RouterLinkActive, RouterOutlet, AgePipe],
   templateUrl: './member-detailed.html',
   styleUrl: './member-detailed.css',
 })
 export class MemberDetailed implements OnInit {
  
-  private memberService = inject(MemberService);
+
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   // protected member$?: Observable<Member>;

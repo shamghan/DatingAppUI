@@ -7,7 +7,7 @@
         <div class="card-body">
             <div class="flex flex-col items-center">
                 <div class="flex text-2xl text-primary">
-                    {{member.dsiplayName}}, 25
+                    {{member.dsiplayName}}, {{member.dateOfBirth | age}}
                 </div>
                 <div class="text-sm">
                     {{member.city}}, {{member.country}}
