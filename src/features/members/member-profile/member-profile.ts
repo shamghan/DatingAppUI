@@ -33,7 +33,7 @@ export class MemberProfile implements OnInit, OnDestroy {
       this.member.set(data['member']);
     });
     this.editableMember = {
-      displayName: this.member()?.dsiplayName || '',
+      displayName: this.member()?.displayName || '',
       description: this.member()?.description,
       city: this.member()?.city || '',
       country: this.member()?.country || ''
