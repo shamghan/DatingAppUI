@@ -21,7 +21,7 @@ export class MemberDetailed implements OnInit {
   protected memberService = inject(MemberService);
   private router = inject(Router);
   // protected member$?: Observable<Member>;
-  protected member = signal<Member | undefined>(undefined)
+  // protected member = signal<Member | undefined>(undefined)
   protected title = signal<string | undefined>('profile');
   protected isCurrentUser = computed(()=>{
     return this.accountService.currentUser()?.id === this.route.snapshot.paramMap.get('id');
@@ -29,9 +29,9 @@ export class MemberDetailed implements OnInit {
 
   ngOnInit(): void {
     // this.member$ = this.loadMember();
-    this.route.data.subscribe({
-      next: data => this.member.set(data['member'])
-    });
+    // this.route.data.subscribe({
+    //   next: data => this.member.set(data['member'])
+    // });
     this.title.set(this.route.firstChild?.snapshot?.title);
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
