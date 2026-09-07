@@ -2,7 +2,7 @@ export interface Member {
   id: string
   dateOfBirth: string
   imageUrl?: string
-  dsiplayName: string
+  displayName: string
   created: string
   lastActive: string
   gender: string
@@ -16,4 +16,10 @@ export type Photo ={
   publicId?: any
   memberId: string
   isApproved: boolean
+}
+export type Editablemember={
+  displayName:string;
+  description?:string;
+  city:string;
+  country:string;
 }
