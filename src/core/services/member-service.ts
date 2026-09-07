@@ -36,6 +36,12 @@ export class MemberService {
   {
     return this.httpClient.put(this.baseUrl+'members', member);
   }
+  uploadPhoto(file: File)
+  {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.httpClient.post<Photo>(this.baseUrl+'members/add-photo', formData);
+  }
   // private getHttpOption(){
   //   return {
   //     headers: new HttpHeaders({
