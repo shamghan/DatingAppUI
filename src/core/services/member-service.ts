@@ -50,4 +50,10 @@ export class MemberService {
   //   }
 
   // }
+
+
+  setMainPhoto(photo: Photo)
+  {
+    return this.httpClient.put(this.baseUrl+'members/set-main-photo/'+ photo.id, {});
+  }
 }
