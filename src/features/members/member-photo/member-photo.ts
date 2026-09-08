@@ -8,11 +8,12 @@ import { ImageUpload } from '../../../shared/image-upload/image-upload';
 import { AccountService } from '../../../core/services/account-service';
 import { User } from '../../../type/user';
 import { StarButon } from "../../../shared/star-buton/star-buton";
+import { DeleteButton } from "../../../shared/delete-button/delete-button";
 
 
 @Component({
   selector: 'app-member-photo',
-  imports: [AsyncPipe, ImageUpload, StarButon],
+  imports: [AsyncPipe, ImageUpload, StarButon, DeleteButton],
   templateUrl: './member-photo.html',
   styleUrls: ['./member-photo.css'],
 })
@@ -21,7 +22,7 @@ export class MemberPhoto implements OnInit {
  private route = inject(ActivatedRoute);
  protected photos = signal<Photo[]>([]);
  protected loading =signal(false);
- private accountService = inject(AccountService);
+ protected accountService = inject(AccountService);
   ngOnInit(): void {
    const memberId = this.route.parent?.snapshot.paramMap.get('id');
   if(memberId)
@@ -66,6 +67,14 @@ export class MemberPhoto implements OnInit {
         ...member,
         imageUrl: photo.url
       }) as Member)
+    }
+  });
+ }
+ deletePhoto(photoId:number)
+ {
+  this.memberService.deletePhoto(photoId).subscribe({
+    next:()=>{
+      this.photos.update(photos=> photos.filter(x=>x.id !== photoId))
     }
   });
  }
