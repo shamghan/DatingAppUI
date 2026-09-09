@@ -2,32 +2,12 @@
     <div class="card-title justify-center text-3xl text-primary">Sign up</div>
     <div class="card-body w-full">
         <form [formGroup]="registerForm" class="flex flex-col gap-1 w-full" (ngSubmit)="register()">
-            <label class="floating-label">
-                <span>Email</span>
-                <input class="input w-full" formControlName="email" placeholder="Email" required>
-            </label>
-            <label class="floating-label text-left">
-                <span>Display Name</span>
-                <input class="input w-full" 
-                [class.input-error]="registerForm.controls['displayName'].invalid 
-                &&  registerForm.controls['displayName'].touched" 
-                formControlName="displayName"
-                placeholder="Display Name">
-
-            </label>
             
-                @if(registerForm.controls['displayName'].invalid && registerForm.controls['displayName'].touched)
-                {
-                 <div class="validation-hint text-error text-xs text-left">Display Name is required.</div>
-                }
-            <label class="floating-label">
-                <span>Password</span>
-                <input class="input w-full" formControlName="password" placeholder="Password" required>
-            </label>
-            <label class="floating-label">
-                <span>Confirm Password</span>
-                <input class="input w-full" formControlName="confirmPassword" placeholder="Confirm Password" required>
-            </label>
+            <app-text-input label="Email" formControlName="email"></app-text-input>
+            <app-text-input label="Display name" formControlName="displayName"></app-text-input>
+            <app-text-input label="Password" formControlName="password" type="password"></app-text-input>
+            <app-text-input label="Confrim Password" formControlName="confirmPassword" type="password"></app-text-input>
+            
             <div class="flex item-center justify-end gap-3">
                 <button class="btn" (click)="cancel()" type="button">Cancel</button>
                 <button class="btn btn-primary" [disabled]="!registerForm.valid" type="submit">Submit</button>
