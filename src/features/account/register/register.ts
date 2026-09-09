@@ -1,6 +1,6 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
 import { RegisterCreds, User } from '../../../type/user';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AccountService } from '../../../core/services/account-service';
 import { JsonPipe } from '@angular/common';
 import { TextInput } from "../../../shared/text-input/text-input";
@@ -11,28 +11,25 @@ import { TextInput } from "../../../shared/text-input/text-input";
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
-export class Register implements OnInit {
+export class Register {
   
   private accountService=inject(AccountService);
+  private fb = inject(FormBuilder)
   cancelRegister = output<boolean>();
   protected creds = {} as RegisterCreds;
-  protected registerForm: FormGroup= new FormGroup({});
-
-  ngOnInit(): void {
-     this.initializeForm();
-  }
-  initializeForm()
-  {
-    this.registerForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      displayName: new FormControl('',[Validators.required]),
-      password: new FormControl('',[Validators.required, Validators.minLength(4), Validators.maxLength(8)]),
-      confirmPassword: new FormControl('',[Validators.required, this.matchValues('password')])
+  protected registerForm: FormGroup;
+  constructor(){
+     this.registerForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      displayName: ['',[Validators.required]],
+      password: ['',[Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
+      confirmPassword: ['',[Validators.required, this.matchValues('password')]]
     });
     this.registerForm.controls['password'].valueChanges.subscribe(()=>{
       this.registerForm.controls['confirmPassword'].updateValueAndValidity();
     })
   }
+ 
 
   matchValues(matchTo: string):ValidatorFn
   {
