@@ -3,7 +3,6 @@ import { MemberService } from '../../../core/services/member-service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Member, Photo } from '../../../type/member';
-import { AsyncPipe } from '@angular/common';
 import { ImageUpload } from '../../../shared/image-upload/image-upload';
 import { AccountService } from '../../../core/services/account-service';
 import { User } from '../../../type/user';
@@ -13,7 +12,7 @@ import { DeleteButton } from "../../../shared/delete-button/delete-button";
 
 @Component({
   selector: 'app-member-photo',
-  imports: [AsyncPipe, ImageUpload, StarButon, DeleteButton],
+  imports: [ ImageUpload, StarButon, DeleteButton],
   templateUrl: './member-photo.html',
   styleUrls: ['./member-photo.css'],
 })
