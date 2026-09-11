@@ -1,7 +1,23 @@
-<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;">
-    @for(member of members$ | async; track member.id)
-    {
-        <app-member-card [member]="member"/>
+<!-- @if(paginatedMembers$ | async; as paginatedResult){ -->
+@if(paginatedMembers(); as paginatedResult){
+    @if(paginatedResult.metaData; as metadata){
+        <app-paginator
+        [pageNumber]="metadata.currentPage"
+        [totalCount]="metadata.totalCount"
+         [totalPages]="metadata.totalPages"
+        [pageSize]="metadata.pageSize"
+       
+        (pageChange)="onPageChange($event)"
+        ></app-paginator>
     }
 
-</div>  
+@if(paginatedResult.items; as members){
+<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;">
+    @for(member of members; track member.id)
+    {
+        <app-member-card [member]="member" />
+    }
+
+</div>
+}
+}
