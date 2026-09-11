@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MemberService } from '../../../core/services/member-service';
 import { Observable } from 'rxjs';
-import { Member } from '../../../type/member';
+import { Member, MemberParams } from '../../../type/member';
 import { AsyncPipe } from '@angular/common';
 import { MemberCard } from "../member-card/member-card";
 import { PaginatedResult } from '../../../type/Pagination';
@@ -17,8 +17,7 @@ export class MemberList implements OnInit {
   private memberService = inject(MemberService);
   protected paginatedMembers= signal<PaginatedResult<Member> | null>(null);
   // protected paginatedMembers$?: Observable<PaginatedResult<Member>>;
-  pageNumber =1;
-  pageSize=5
+  protected memberParams = new MemberParams();
   constructor()
   {
    
@@ -30,7 +29,7 @@ export class MemberList implements OnInit {
   {
     //this.paginatedMembers$=this.memberService.getMembers(this.pageNumber, this.pageSize);
 
-       this.memberService.getMembers(this.pageNumber, this.pageSize).subscribe({
+       this.memberService.getMembers(this.memberParams).subscribe({
         next: result=> {
           this.paginatedMembers.set(result)
         }
@@ -40,8 +39,8 @@ export class MemberList implements OnInit {
 
   onPageChange(event:{pageNumber: number, pageSize:number})
   {
-    this.pageSize= event.pageSize;
-    this.pageNumber= event.pageNumber;
+    this.memberParams.pageSize= event.pageSize;
+    this.memberParams.pageNumber= event.pageNumber;
     this.loadMember();
   }
 }
