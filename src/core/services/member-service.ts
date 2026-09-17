@@ -25,7 +25,11 @@ export class MemberService {
     params=params.append('orderBy',memberParams.orderBy);
     if(memberParams.gender) params=params.append('gender', memberParams.gender);
     //return this.httpClient.get<Member[]>(this.baseUrl+'members', this.getHttpOption());
-    return this.httpClient.get<PaginatedResult<Member>>(this.baseUrl+'members',{params});
+    return this.httpClient.get<PaginatedResult<Member>>(this.baseUrl+'members',{params}).pipe(
+      tap(()=>{
+        localStorage.setItem('filters', JSON.stringify(memberParams));
+      })
+    );
   }
   getMember(id:string){
 

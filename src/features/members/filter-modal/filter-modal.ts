@@ -1,4 +1,4 @@
-import { Component, ElementRef, output, ViewChild } from '@angular/core';
+import { Component, ElementRef, model, output, ViewChild } from '@angular/core';
 import { MemberParams } from '../../../type/member';
 import { FormsModule } from '@angular/forms';
 
@@ -12,12 +12,12 @@ export class FilterModal {
   @ViewChild('filterModal') modalRef!:ElementRef<HTMLDialogElement>;
   closedModal = output();
   submitData = output<MemberParams>();
-  memberParams = new MemberParams();
+  //memberParams = input<MemberParams>();
+  memberParams = model<MemberParams>(new MemberParams());
+
   open()
   {
     this.modalRef.nativeElement.showModal();
-
-
   }
   close()
   {
@@ -26,18 +26,18 @@ export class FilterModal {
   }
   submit()
   {
-    this.submitData.emit(this.memberParams);
+    this.submitData.emit(this.memberParams());
     this.close();
   }
 
   onMinAgeChange()
   {
-    if(this.memberParams.minAge< 18) this.memberParams.minAge=18
+    if(this.memberParams().minAge< 18) this.memberParams().minAge=18
 
   }
   onMaxAgeChange(){
-    if(this.memberParams.maxAge< this.memberParams.minAge){
-      this.memberParams.maxAge = this. memberParams.minAge;
+    if(this.memberParams().maxAge< this.memberParams().minAge){
+      this.memberParams().maxAge = this. memberParams().minAge;
     }
   }
 }
