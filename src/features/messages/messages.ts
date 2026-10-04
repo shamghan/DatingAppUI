@@ -8,21 +8,21 @@ import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-messages',
-  imports: [Paginator, RouterLink,DatePipe],
+  imports: [Paginator, RouterLink, DatePipe],
   templateUrl: './messages.html',
   styleUrl: './messages.css',
 })
 export class Messages implements OnInit {
-  
+
   private messageService = inject(MessageService);
-  protected container ='Inbox';
-  protected fetchedContainer ='Inbox';
-  protected pageNumber =1;
-  protected pageSize =10;
-  protected paginatedMessages= signal<PaginatedResult<Message> | null>(null);
-  tabs=[
-    {label:'Inbox',value:'Inbox'},
-    {label:'Outbox',value:'Outbox'},
+  protected container = 'Inbox';
+  protected fetchedContainer = 'Inbox';
+  protected pageNumber = 1;
+  protected pageSize = 10;
+  protected paginatedMessages = signal<PaginatedResult<Message> | null>(null);
+  tabs = [
+    { label: 'Inbox', value: 'Inbox' },
+    { label: 'Outbox', value: 'Outbox' },
   ];
   ngOnInit(): void {
     this.loadMessages();
@@ -38,17 +38,39 @@ export class Messages implements OnInit {
       },
     });
   }
-  get isInbox(){
-    return this.fetchedContainer==='Inbox';
+  deleteMessage(event: Event, id: string) {
+    event.stopPropagation();
+    this.messageService.deleteMessage(id).subscribe({
+      next: () => {
+        const current = this.paginatedMessages();
+        if (current?.items) {
+
+          this.paginatedMessages.update(prev => {
+            if (!prev?.items) return null;
+            const newItems = prev.items.filter(x => x.id !== id) || [];
+
+            return {
+
+              items: newItems,
+              metaData: prev.metaData
+            };
+          });
+        }
+      }
+    })
   }
-  setContainer(container:string){
-    this.container=container;
-    this.pageNumber=1;
+
+  get isInbox() {
+    return this.fetchedContainer === 'Inbox';
+  }
+  setContainer(container: string) {
+    this.container = container;
+    this.pageNumber = 1;
     this.loadMessages();
   }
-  onPageChange(event:{pageNumber:number, pageSize:number}){
-    this.pageNumber=event.pageNumber;
-    this.pageSize=event.pageSize;
+  onPageChange(event: { pageNumber: number, pageSize: number }) {
+    this.pageNumber = event.pageNumber;
+    this.pageSize = event.pageSize;
     this.loadMessages();
   }
 }

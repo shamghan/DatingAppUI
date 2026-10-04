@@ -12,48 +12,45 @@ import { PaginatedResult } from '../../type/Pagination';
 export class MemberService {
   private httpClient = inject(HttpClient);
   private accountService = inject(AccountService);
-  private baseUrl= environment.apiUrl;
+  private baseUrl = environment.apiUrl;
   editMode = signal(false);
-  member = signal<Member | null> (null);
-  getMembers(memberParams: MemberParams)
-  {
+  member = signal<Member | null>(null);
+  getMembers(memberParams: MemberParams) {
     let params = new HttpParams();
-    params=params.append('pageNumber',memberParams.pageNumber);
-    params=params.append('pageSize',memberParams.pageSize);
-    params=params.append('minAge',memberParams.minAge);
-    params=params.append('maxAge',memberParams.maxAge);
-    params=params.append('orderBy',memberParams.orderBy);
-    if(memberParams.gender) params=params.append('gender', memberParams.gender);
+    params = params.append('pageNumber', memberParams.pageNumber);
+    params = params.append('pageSize', memberParams.pageSize);
+    params = params.append('minAge', memberParams.minAge);
+    params = params.append('maxAge', memberParams.maxAge);
+    params = params.append('orderBy', memberParams.orderBy);
+    if (memberParams.gender) params = params.append('gender', memberParams.gender);
     //return this.httpClient.get<Member[]>(this.baseUrl+'members', this.getHttpOption());
-    return this.httpClient.get<PaginatedResult<Member>>(this.baseUrl+'members',{params}).pipe(
-      tap(()=>{
+    return this.httpClient.get<PaginatedResult<Member>>(this.baseUrl + 'members', { params }).pipe(
+      tap(() => {
         localStorage.setItem('filters', JSON.stringify(memberParams));
       })
     );
   }
-  getMember(id:string){
+  getMember(id: string) {
 
     //return this.httpClient.get<Member>(this.baseUrl+'member/id',this.getHttpOption());
-    return this.httpClient.get<Member>(this.baseUrl+'members/'+id).pipe(
-     tap(member => {
-      this.member.set(member);
-     })
+    return this.httpClient.get<Member>(this.baseUrl + 'members/' + id).pipe(
+      tap(member => {
+        this.member.set(member);
+      })
     );
   }
-  getMemberPhotos(id:string)
-  {
-    return this.httpClient.get<Photo[]>(this.baseUrl+'members/'+id+'/photos');
+  getMemberPhotos(id: string) {
+    return this.httpClient.get<Photo[]>(this.baseUrl + 'members/' + id + '/photos');
   }
-  updateMember(member: Editablemember)
-  {
-    return this.httpClient.put(this.baseUrl+'members', member);
+  updateMember(member: Editablemember) {
+    return this.httpClient.put(this.baseUrl + 'members', member);
   }
-  uploadPhoto(file: File)
-  {
+  uploadPhoto(file: File) {
     const formData = new FormData();
     formData.append('file', file);
-    return this.httpClient.post<Photo>(this.baseUrl+'members/add-photo', formData);
+    return this.httpClient.post<Photo>(this.baseUrl + 'members/add-photo', formData);
   }
+
   // private getHttpOption(){
   //   return {
   //     headers: new HttpHeaders({
@@ -64,12 +61,10 @@ export class MemberService {
   // }
 
 
-  setMainPhoto(photo: Photo)
-  {
-    return this.httpClient.put(this.baseUrl+'members/set-main-photo/'+ photo.id, {});
+  setMainPhoto(photo: Photo) {
+    return this.httpClient.put(this.baseUrl + 'members/set-main-photo/' + photo.id, {});
   }
-  deletePhoto(photoId: number)
-  {
-    return this.httpClient.delete(this.baseUrl + 'members/delete-photo/'+photoId);
+  deletePhoto(photoId: number) {
+    return this.httpClient.delete(this.baseUrl + 'members/delete-photo/' + photoId);
   }
 }

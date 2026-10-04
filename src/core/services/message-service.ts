@@ -19,7 +19,9 @@ export class MessageService {
       .set('PageSize', pageSize);
     return this.http.get<PaginatedResult<Message>>(this.baseUrl + 'message', {params});
   }
-
+  deleteMessage(id: string) {
+    return this.http.delete(this.baseUrl + 'message/' + id);
+  }
   getMessageThread(memberId:string) {
     return this.http.get<Message[]>(this.baseUrl + 'message/thread/' + memberId);
   }
