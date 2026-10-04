@@ -32,6 +32,10 @@ const cacheKey = generateCacheKey(req.url, req.params)
   {
     invalidateCache(`/likes`);
   }
+  if(req.method === 'POST' && req.url.includes('/message'))
+  {
+    invalidateCache(`/message`);
+  }
   if(req.method === 'GET')
   {
     const cacheresponse = cache.get(cacheKey);

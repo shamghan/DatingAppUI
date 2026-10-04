@@ -27,7 +27,7 @@
 
 
     </div>
-    <div class="card bg-base-100 w-3/4 p-6">
+    <div class="card bg-base-100 w-3/4 p-6 flex-col h-[85vh]">
         <div class="flex justify-between items-center">
             <h3 class="card-title text-3xl text-primary">{{title()}}</h3>
             @if(isCurrentUser())
@@ -41,7 +41,7 @@
         <span>{{member.lastActive | date:'dd MMM y h:mm a'}}</span> -->
 
         <div class="divider"></div>
-        <div>
+        <div class="h-full">
             <router-outlet></router-outlet>
         </div>
     </div>

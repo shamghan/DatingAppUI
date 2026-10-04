@@ -1,1 +1,52 @@
-<p>messages works!</p>
+<div class="flex flex-col w-full">
+    <div class="flex justify-between item-center">
+        <div class="tabs tabs-box tabs-lg text-primary w-fit">
+            @for(tab of tabs;track $index){
+            <button role="tab" class="tab" (click)="setContainer(tab.value)" [class.tab-active]="container===tab.value">
+                {{tab.label}}
+            </button>
+            }
+        </div>
+        @if(paginatedMessages()?.metaData; as metaData)
+        {
+        <app-paginator [hidden]="metaData.totalCount===0" [pageNumber]="metaData.currentPage"
+            [pageSize]="metaData.pageSize" [totalCount]="metaData.totalCount" [totalPages]="metaData.totalPages"
+            (pageChange)="onPageChange($event)" />
+        }
+
+    </div>
+</div>
+<div class="overflow-x-auto mt-top">
+    <table class="table bg-base-100 table-fixed w-full">
+        <!-- head -->
+        <thead>
+            <tr>
+                <th class="w-2/8">Sender/ recipient</th>
+                <th class="w-4/8">Message</th>
+                <th class="w-2/8">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(message of paginatedMessages()?.items; track message.id){
+            <tr [class.font-bold]="isInbox && !message.dateRead"
+                routerLink="/members/{{isInbox ? message.senderId : message.recipientId}}/messages"
+                class="hover:bg-base-200 cursor-pointer">
+                <td class="w-2/8">
+                    <div class="flex items-center gap-2">
+                        <div class="h-12 w-12">
+                            <img class="rounded-full"
+                                src="{{isInbox ? message.senderImageUrl : message.recipientImageUrl}}"
+                                alt="image of member">
+                        </div>
+                        <div>
+                            {{ isInbox ? message.senderDisplayName : message.recipientDisplayName}}
+                        </div>
+                    </div>
+                </td>
+                <td class="truncate w-4/8">{{message.content}}</td>
+                <td class="w-2/8">{{message.messageSent | date:'medium'}}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
