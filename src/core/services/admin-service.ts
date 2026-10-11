@@ -1,8 +1,19 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { environment } from '../../environments/environment.development';
+import { HttpClient } from '@angular/common/http';
+import { User } from '../../type/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminService {
-  
+  baseUrl = environment.apiUrl;
+  private http = inject(HttpClient);
+  getUserWithRoles()
+  {
+    return this.http.get<User[]>(this.baseUrl+'admin/users-with-roles');
+  }
+  updateUserRole(userId:string, roles:string[]){
+    return this.http.put<string[]>(this.baseUrl+'admin/edit-roles/'+userId+'?roles='+roles,{});
+  }
 }
