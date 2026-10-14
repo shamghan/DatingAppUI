@@ -10,4 +10,5 @@ export interface Message {
   dateRead?: string
   messageSent: string
   currentUserSender?:boolean
+  
 }

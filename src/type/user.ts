@@ -4,6 +4,7 @@ export type User={
     email:string;
     token:String;
     imageUrl?:string;
+    roles:string[];
 }
 
 export type LoginCreds={
