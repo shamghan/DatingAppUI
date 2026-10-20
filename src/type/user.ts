@@ -2,7 +2,7 @@ export type User={
     id:string;
     displayName:string;
     email:string;
-    token:String;
+    token:string;
     imageUrl?:string;
     roles:string[];
 }
