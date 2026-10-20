@@ -6,6 +6,7 @@ import { EMPTY, filter, Observable } from 'rxjs';
 import { Member } from '../../../type/member';
 import { AgePipe } from '../../../core/pipes/age-pipe';
 import { AccountService } from '../../../core/services/account-service';
+import { PresenceService } from '../../../core/services/presence-service';
 
 @Component({
   selector: 'app-member-detailed',
@@ -23,6 +24,7 @@ export class MemberDetailed implements OnInit {
   // protected member$?: Observable<Member>;
   // protected member = signal<Member | undefined>(undefined)
   protected title = signal<string | undefined>('profile');
+  protected presenceService = inject(PresenceService);
   protected isCurrentUser = computed(()=>{
     return this.accountService.currentUser()?.id === this.route.snapshot.paramMap.get('id');
   });

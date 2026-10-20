@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { ToastService } from './toast-service';
 import { User } from '../../type/user';
@@ -11,7 +11,7 @@ export class PresenceService {
   private hubUrl = environment.hubUrl;
   private toast = inject(ToastService);
   hubConnection?:HubConnection;
-  
+  onlineUsers = signal<string[]>([]);
   createHubConnection(user: User) {
   this.hubConnection = new HubConnectionBuilder()
     .withUrl(`${this.hubUrl}presence`, {
@@ -19,17 +19,19 @@ export class PresenceService {
     })
     .withAutomaticReconnect()
     .build();
-    this.hubConnection.on('UserOnline', email => {
-      this.toast.success(email + ' has connected');
+    this.hubConnection.on('UserOnline', userId => {
+      this.onlineUsers.update(user=>[...user, userId])
     });
 
-    this.hubConnection.on('UserOffline', email => {
-      this.toast.info(email + ' has disconnected');
+    this.hubConnection.on('UserOffline', userId => {
+      this.onlineUsers.update(users=>users.filter(x=> x !== userId))
     });
 
-    this.hubConnection.start()
-      .then(() => this.toast.success('Connected to presence hub'))
-      .catch(error => console.log(error));
+    this.hubConnection.on('GetOnlineUsers', userIds => {
+      this.onlineUsers.set(userIds);
+    });
+
+    this.hubConnection.start().catch(error => console.log(error));
   }
 stopHubConnctio()
 {
