@@ -7,6 +7,7 @@ import { TimeAgoPipe } from '../../../core/pipes/time-ago-pipe';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { PresenceService } from '../../../core/services/presence-service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-member-message',
@@ -16,11 +17,12 @@ import { PresenceService } from '../../../core/services/presence-service';
 })
 export class MemberMessage implements OnInit {
   @ViewChild('messageEndRef') messageEndRef!: ElementRef;
-  private messageService = inject(MessageService);
+  protected messageService = inject(MessageService);
   private memberService = inject(MemberService);
   protected messages = signal<Message[]>([]);
   private http = inject(HttpClient);
   protected presenceService = inject(PresenceService);
+  private route = inject(ActivatedRoute);
   protected messageContent = '';
   constructor() {
     effect(() => {
@@ -30,7 +32,14 @@ export class MemberMessage implements OnInit {
     })
   }
   ngOnInit(): void {
-    this.loadMessages();
+   // this.loadMessages();
+   this.route.parent?.paramMap.subscribe({
+    next: params=>{
+      const otherUserId = params.get('id');
+      if(!otherUserId) throw new Error('can not connect to hub');
+      this.messageService.createHubConnection(otherUserId);
+    }
+   })
   }
   loadMessages() {
     const memberId = this.memberService.member()?.id;
