@@ -19,14 +19,15 @@ export class MemberMessage implements OnInit {
   @ViewChild('messageEndRef') messageEndRef!: ElementRef;
   protected messageService = inject(MessageService);
   private memberService = inject(MemberService);
-  protected messages = signal<Message[]>([]);
+
   private http = inject(HttpClient);
   protected presenceService = inject(PresenceService);
   private route = inject(ActivatedRoute);
   protected messageContent = '';
   constructor() {
     effect(() => {
-      if (this.messages().length > 0) {
+      const currentMessages = this.messageService.messageThread();
+      if (currentMessages.length > 0) {
         this.scrollToBottom();
       }
     })
@@ -41,36 +42,14 @@ export class MemberMessage implements OnInit {
     }
    })
   }
-  loadMessages() {
-    const memberId = this.memberService.member()?.id;
-    if (memberId) {
-      this.messageService.getMessageThread(memberId).subscribe({
-        next: (response) => {
-          this.messages.set(response.map(message => ({
-            ...message,
-            currentUserSender: message.senderId !== memberId
-          })));
-        },
-        complete: () => this.scrollToBottom(),
-        error: (error) => {
-          console.error('Error fetching messages:', error);
-        },
-      });
-    }
-  }
+  
   sendMessage() {
     const recipientId = this.memberService.member()?.id;
     if (!recipientId) return;
 
     if (recipientId && this.messageContent.trim() !== '') {
-      this.messageService.sendMessage(recipientId, this.messageContent).subscribe({
-        next: (message) => {
-          this.messages.update(messages => {
-            message.currentUserSender = true;
-            return [...messages, message];
-          });
-          this.messageContent = '';
-        }
+      this.messageService.sendMessage(recipientId, this.messageContent)?.then(()=>{
+        this.messageContent ='';
       });
     }
   }

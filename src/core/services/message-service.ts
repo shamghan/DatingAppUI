@@ -6,6 +6,7 @@ import { PaginatedResult } from '../../type/Pagination';
 import { Message } from '../../type/message';
 import { AccountService } from './account-service';
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
+import { Messages } from '../../features/messages/messages';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,10 @@ createHubConnection(otherUserId:string){
             currentUserSender: message.senderId !== otherUserId
           })));
    })
+   this.hubConnection.on('NewMessage', (message: Message)=>{
+    message.currentUserSender = message.senderId === currentUser.id;
+    this.messageThread.update(messages=>[...messages, message])
+   })
 }
 stopHubConnection()
 {
@@ -55,6 +60,6 @@ stopHubConnection()
     return this.http.get<Message[]>(this.baseUrl + 'message/thread/' + memberId);
   }
    sendMessage(recipientId:string, content:string){
-    return this.http.post<Message>(this.baseUrl + 'message', {recipientId, content});
+    return this.hubConnection?.invoke('SendMessage', {recipientId, content});
   }
 }
