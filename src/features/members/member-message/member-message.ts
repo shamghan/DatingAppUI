@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { MessageService } from '../../../core/services/message-service';
 import { MemberService } from '../../../core/services/member-service';
 import { Message } from '../../../type/message';
@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './member-message.html',
   styleUrl: './member-message.css',
 })
-export class MemberMessage implements OnInit {
+export class MemberMessage implements OnInit, OnDestroy {
   @ViewChild('messageEndRef') messageEndRef!: ElementRef;
   protected messageService = inject(MessageService);
   private memberService = inject(MemberService);
@@ -31,6 +31,9 @@ export class MemberMessage implements OnInit {
         this.scrollToBottom();
       }
     })
+  }
+  ngOnDestroy(): void {
+    this.messageService.stopHubConnection();
   }
   ngOnInit(): void {
    // this.loadMessages();
