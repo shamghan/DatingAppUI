@@ -34,7 +34,7 @@ export class PresenceService {
     this.hubConnection.on('NewMessageReceived',(message:Message) =>{
       this.toast.info(message.senderDisplayName + ' has sent you a new message');
     })
-    //this.hubConnection.start().catch(error => console.log(error));
+    this.hubConnection.start().catch(error => console.log(error));
   }
   stopHubConnctio() {
     if (this.hubConnection?.state === HubConnectionState.Connected) {
