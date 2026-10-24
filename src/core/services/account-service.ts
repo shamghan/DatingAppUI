@@ -71,6 +71,7 @@ export class AccountService {
     localStorage.removeItem('filters');
     this.likesService.clearLikeIds();
     this.currentUser.set(null);
+    this.presenceService.stopHubConnctio();
   }
   private getrolesFromToken(user: User):string[]{
     const payload= user.token.split('.')[1];

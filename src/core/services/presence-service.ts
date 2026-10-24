@@ -32,7 +32,7 @@ export class PresenceService {
       this.onlineUsers.set(userIds);
     });
     this.hubConnection.on('NewMessageReceived',(message:Message) =>{
-      this.toast.info(message.senderDisplayName + ' has sent you a new message');
+      this.toast.info(message.senderDisplayName + ' has sent you a new message',10000, message.senderImageUrl,`/members/${message.senderId}/messages`);
     })
     this.hubConnection.start().catch(error => console.log(error));
   }
