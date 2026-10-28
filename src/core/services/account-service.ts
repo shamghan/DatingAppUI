@@ -67,6 +67,14 @@ export class AccountService {
     }
   }
   logout(){
+    this.http.post(this.baseUrl+'account/logout', {},{withCredentials:true}).subscribe({
+      next: ()=>{
+        localStorage.removeItem('filters');
+        this.likesService.clearLikeIds();
+        this.currentUser.set(null);
+        this.presenceService.stopHubConnctio();
+      }
+    })
     //localStorage.removeItem('user');
     localStorage.removeItem('filters');
     this.likesService.clearLikeIds();

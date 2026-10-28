@@ -36,6 +36,10 @@ const cacheKey = generateCacheKey(req.url, req.params)
   {
     invalidateCache(`/message`);
   }
+  if(req.method.includes('POST') && req.url.includes('/logout'))
+  {
+    cache.clear();
+  }
   if(req.method === 'GET')
   {
     const cacheresponse = cache.get(cacheKey);
