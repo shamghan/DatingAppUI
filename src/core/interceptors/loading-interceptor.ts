@@ -3,7 +3,8 @@ import { BusyService } from '../services/busy-service';
 import { inject } from '@angular/core';
 import { finalize } from 'rxjs/internal/operators/finalize';
 
-import { delay, of, tap } from 'rxjs';
+import { delay, identity, of, tap } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 const cache = new Map<string, HttpEvent<unknown>>();
 export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   
@@ -51,7 +52,7 @@ const cacheKey = generateCacheKey(req.url, req.params)
 } 
   busyService.busy();
   return next(req).pipe(
-    delay(2000),
+    (environment.production ? identity : delay(500)),
     tap(response=>{
       cache.set(cacheKey,response);
     }),
