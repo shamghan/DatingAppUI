@@ -21,7 +21,10 @@
             <ul class="menu rounded-box w-full text-xl">
                 <li><a routerLink="profile" routerLinkActive="primary">Profile</a></li>
                 <li><a routerLink="photos" routerLinkActive="active">Photos</a></li>
-                <li><a routerLink="messages" routerLinkActive="active">Messages</a></li>
+                @if(!isCurrentUser())
+                {
+                    <li><a routerLink="messages" routerLinkActive="active">Messages</a></li>
+                }
             </ul>
         </div>
         <div class="card-actions justify-between gap-2 px-2 mb-3">
